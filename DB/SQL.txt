@@ -1,0 +1,26 @@
+use money
+
+create table Valute(
+ID int PRIMARY KEY IDENTITY,
+Code varchar(20) not null,
+name nvarchar(max) not null)
+
+create table dateCourse 
+(ID int PRIMARY KEY IDENTITY, 
+date date not null,
+valuteID varchar(20) REFERENCES Valute (Code),
+value money not null)
+
+create procedure GetValuteValue
+				@date date,
+				@valute nvarchar(max),
+				@value money output
+as 
+	begin
+		 select @value = dateCourse.value
+		from dateCourse
+				join Valute
+					on dateCourse.valuteID = Valute.Code
+						and Valute.name = @valute
+						and dateCourse.date = @date
+	end;
